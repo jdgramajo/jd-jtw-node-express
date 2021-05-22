@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 
 var corsOptions = {
-  origin: 'http://127.0.0.1:8080/*'
+  origin: '*'
 }
 app.use(cors(corsOptions));
 
