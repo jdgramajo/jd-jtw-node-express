@@ -1,0 +1,19 @@
+{
+  "name": "jwting",
+  "version": "1.0.0",
+  "description": "Usage of JWT with Postgres.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "JWT"
+  ],
+  "author": "JD",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.6.2"
+  }
+}
