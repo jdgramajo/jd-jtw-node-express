@@ -33,23 +33,14 @@ db.sequelize
   });
 
 const sync = () => {
-  // force: true will drop the table if it already exists,
-  // but it is the roles one, so we're cool with that.
+  // force: true will drop the table if it already exists.
   db.sequelize.sync({force: true}).then(() => {
 
-    db.Role.create({
-      id: 1,
-      name: "user"
-    });
-   
-    db.Role.create({
-      id: 2,
-      name: "moderator"
-    });
-   
-    db.Role.create({
-      id: 3,
-      name: "admin"
+    db.ROLES.map((role) => {
+      db.Role.create({
+        id: db.ROLES.indexOf(role),
+        name: role
+      });
     });
 
   });
