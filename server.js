@@ -4,7 +4,8 @@ db.sequelize
   .authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
-    sync();
+    // Uncomment the next line to create initial data.
+    // sync();
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
