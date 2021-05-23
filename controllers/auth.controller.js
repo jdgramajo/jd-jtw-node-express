@@ -15,7 +15,6 @@ const signUp = (req, res) => {
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
   }).then((user) => {
-    console.log(`req.body.roles: ${req.body.roles}`);
     if (req.body.roles && req.body.roles.length) {
       Role.findAll({
         where: {
