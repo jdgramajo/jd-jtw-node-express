@@ -1,10 +1,10 @@
 module.exports = {
-  schema: 'testdb',
-  user: 'postgres',
-  password: 'psqlion',
+  schema: process.env.DATABASE_SCHEMA,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
   connection: {
-    host: 'localhost',
-    dialect: 'postgres',
+    host: process.env.DATABASE_HOST,
+    dialect: process.env.DATABASE_DIALECT,
     pool: {
       max: 5,
       min: 0,
