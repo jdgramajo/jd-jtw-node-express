@@ -5,6 +5,12 @@ module.exports = {
   connection: {
     host: process.env.DATABASE_HOST,
     dialect: process.env.DATABASE_DIALECT,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    },
     pool: {
       max: 5,
       min: 0,
