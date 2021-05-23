@@ -9,9 +9,14 @@ var corsOptions = {
 }
 app.use(cors(corsOptions));
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to JWTing!' });
 });
+
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
