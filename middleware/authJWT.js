@@ -80,11 +80,19 @@ const isModeratorOrAdmin = (req, res, next) => {
   });
 };
 
+const hasRole = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(console.log);
+    next();
+  });
+}
+
 const authJWT = {
   verifyToken,
   isAdmin,
   isModerator,
   isModeratorOrAdmin,
+  hasRole,
 };
 
 module.exports = authJWT;

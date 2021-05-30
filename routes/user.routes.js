@@ -10,23 +10,15 @@ module.exports = (app) => {
     next();
   });
 
-  app.get('/api/test/all', controller.allAccess);
-
   app.get(
-    '/api/test/user',
-    [authJWT.verifyToken],
-    controller.userBoard
+    '/roles',
+    [authJWT.verifyToken, authJWT.hasRole],
+    controller.adminBoard
   );
 
   app.get(
-    '/api/test/mod',
-    [authJWT.verifyToken, authJWT.isModerator],
-    controller.moderatorBoard
-  );
-
-  app.get(
-    '/api/test/admin',
-    [authJWT.verifyToken, authJWT.isAdmin],
+    '/hasRoles',
+    [authJWT.verifyToken, authJWT.hasRole],
     controller.adminBoard
   );
 };

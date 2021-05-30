@@ -11,7 +11,7 @@ module.exports = (app) => {
   });
 
   app.post(
-    '/api/auth/signup',
+    '/auth/signup',
     [
       verifySignup.checkDuplicateUsernameOrEmail,
       verifySignup.checkRoles,
@@ -19,5 +19,5 @@ module.exports = (app) => {
     controller.signUp
   );
 
-  app.post('/api/auth/signin', controller.signIn);
+  app.post('/auth/signin', controller.signIn);
 };

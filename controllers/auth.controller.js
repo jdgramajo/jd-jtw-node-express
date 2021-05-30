@@ -24,14 +24,12 @@ const signUp = (req, res) => {
         }
       }).then((roles) => {
         user.setRoles(roles).then(() => {
-          res.send({ message: 'User registered successfully!' });
+          res.send({ message: 'User registered successfully.' });
         });
       });
     } else {
-      // user role = 0
-      user.setRoles([0]).then(() => {
-        res.send({ message: 'User registered successfully!' });
-      });
+      console.log('No roles specified, denying signup.');
+      res.status(422).send();
     }
   }).catch((err) => {
     res.status(500).send({ message: err.message });
@@ -67,16 +65,12 @@ const signIn = (req, res) => {
       expiresIn: 60 // 1 minute
     });
 
-    const authorities = [];
     user.getRoles().then(roles => {
-      roles.map((role) => {
-        authorities.push(`ROLE_${role.name.toUpperCase()}`);
-      });
       res.status(200).send({
         id: user.id,
         username: user.username,
         email: user.email,
-        roles: authorities,
+        roles,
         accessToken: token
       });
     });

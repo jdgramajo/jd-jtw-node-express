@@ -31,7 +31,7 @@ db.sequelize
   .then(() => {
     console.log('Connection has been established successfully.');
     // Uncomment the next line to create initial data.
-    // sync();
+    sync();
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
