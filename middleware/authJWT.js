@@ -23,75 +23,35 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-const isAdmin = (req, res, next) => {
+const getRoles = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
-    user.getRoles().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'admin') {
-          next();
-          return;
-        }
-      }
-
-      res.status(403).send({
-        message: 'Unauthorized'
-      });
-      return;
+    user.getRoles().then(userRoles => {
+      const roles = [];
+      userRoles.map(role => roles.push(role.name));
+      req.roles = roles;
+      next();
     });
+  }).catch(err => {
+    res.status(404).send();
   });
-};
-
-const isModerator = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
-    user.getRoles().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'moderator') {
-          next();
-          return;
-        }
-      }
-
-      res.status(403).send({
-        message: 'Unauthorized'
-      });
-    });
-  });
-};
-
-const isModeratorOrAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
-    user.getRoles().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'moderator') {
-          next();
-          return;
-        }
-
-        if (roles[i].name === 'admin') {
-          next();
-          return;
-        }
-      }
-
-      res.status(403).send({
-        message: 'Unauthorized'
-      });
-    });
-  });
-};
+}
 
 const hasRole = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
-    user.getRoles().then(console.log);
-    next();
+    user.getRoles().then(userRoles => {
+      const roles = [];
+      userRoles.map(role => roles.push(role.name));
+      req.hasRole = roles.includes(req.body.role);
+      next();
+    });
+  }).catch(err => {
+    res.status(404).send();
   });
 }
 
 const authJWT = {
   verifyToken,
-  isAdmin,
-  isModerator,
-  isModeratorOrAdmin,
+  getRoles,
   hasRole,
 };
 

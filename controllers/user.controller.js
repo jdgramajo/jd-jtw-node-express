@@ -1,22 +1,12 @@
-const allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
+const returnRoles = (req, res) => {
+  res.status(200).send({ roles: req.roles });
 };
 
-const userBoard = (req, res) => {
-  res.status(200).send("User Content.");
-};
-
-const adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
-
-const moderatorBoard = (req, res) => {
-  res.status(200).send("Moderator Content.");
+const confirmRole = (req, res) => {
+  res.status(200).send({ hasRole: req.hasRole });
 };
 
 module.exports = {
-  allAccess,
-  userBoard,
-  adminBoard,
-  moderatorBoard
+  returnRoles,
+  confirmRole
 }

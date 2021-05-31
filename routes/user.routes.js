@@ -12,13 +12,13 @@ module.exports = (app) => {
 
   app.get(
     '/roles',
-    [authJWT.verifyToken, authJWT.hasRole],
-    controller.adminBoard
+    [authJWT.verifyToken, authJWT.getRoles],
+    controller.returnRoles
   );
 
-  app.get(
+  app.post(
     '/hasRoles',
     [authJWT.verifyToken, authJWT.hasRole],
-    controller.adminBoard
+    controller.confirmRole
   );
 };

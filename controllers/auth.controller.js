@@ -65,7 +65,11 @@ const signIn = (req, res) => {
       expiresIn: 60 // 1 minute
     });
 
-    user.getRoles().then(roles => {
+    user.getRoles().then(userRoles => {
+      const roles = [];
+      userRoles.map(role => {
+        roles.push(role.name)
+      });
       res.status(200).send({
         id: user.id,
         username: user.username,
