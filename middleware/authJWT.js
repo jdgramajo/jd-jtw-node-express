@@ -49,10 +49,41 @@ const hasRole = (req, res, next) => {
   });
 }
 
+const isAdmin = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(userRoles => {
+      const roles = [];
+      userRoles.map(role => roles.push(role.name));
+      if (!roles.includes('JWTING_ADMIN')) res.status(403).send();
+      next();
+    });
+  }).catch(err => {
+    res.status(404).send();
+  });
+}
+
+const checkIfRoleExists = (req, res, next) => {
+  const newRole = req.body.role;
+  if (!newRole) {
+    res.status(422).send()
+    return;
+  };
+
+  const existingRoles = Role.findAll({ attributes: [ 'name' ] });
+  if (existingRoles.includes(newRole)) {
+    res.status(422).send({ message: `Role ${role} already exists`});
+    return;
+  }
+
+  next();
+};
+
 const authJWT = {
   verifyToken,
   getRoles,
   hasRole,
+  isAdmin,
+  checkIfRoleExists
 };
 
 module.exports = authJWT;

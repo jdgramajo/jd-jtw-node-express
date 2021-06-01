@@ -1,7 +1,8 @@
-const { verifySignup } = require('../middleware');
+const { verifySignup, authJWT } = require('../middleware');
 const controller = require('../controllers/auth.controller');
 
 module.exports = (app) => {
+
   app.use((req, res, next) => {
     res.header(
       'Access-Control-Allow-Headers',
@@ -13,6 +14,7 @@ module.exports = (app) => {
   app.post(
     '/auth/signup',
     [
+      // authJWT.isAdmin,
       verifySignup.checkDuplicateUsernameOrEmail,
       verifySignup.checkRoles,
     ],
@@ -20,4 +22,13 @@ module.exports = (app) => {
   );
 
   app.post('/auth/signin', controller.signIn);
+
+  app.post('/auth/roles',
+    [
+      authJWT.isAdmin,
+      authJWT.checkIfRoleExists
+    ],
+    controller.createRole
+  );
+
 };

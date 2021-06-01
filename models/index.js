@@ -22,6 +22,4 @@ db.User.belongsToMany(db.Role, {
   otherKey: 'roleId'
 });
 
-db.ROLES = [ 'JWTING_ADMIN', 'JWTING_ADVANCED_USER', 'BEURZEN_ADMIN', 'BEURZEN_ADVANCED_USER', 'BEURZEN_BASIC_USER' ];
-
 module.exports = db;

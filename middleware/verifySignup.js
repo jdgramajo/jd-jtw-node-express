@@ -1,5 +1,5 @@
 const db = require("../models");
-const ROLES = db.ROLES;
+const Role = db.Role;
 const User = db.User;
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
@@ -34,17 +34,20 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
   });
 };
 
-const checkRoles = (req, res, next) => {
-  if (req.body.roles) {
-    req.body.roles.map((role) => {
-      if (!ROLES.includes(role)) {
-        res.status(422).send({
-          message: `Error: Role ${role} is not valid`
-        });
-        return;
-      }
-    })
+const checkRoles = async (req, res, next) => {
+  const newRoles = req.body.roles;
+  if (!newRoles) {
+    res.status(422).send({ message: 'Must specify a role or roles for the user.' });
+    return;
   }
+
+  const existingRolesObjects = await Role.findAll({ attributes: [ 'name' ] });
+  const existingRolesArray = [];
+  existingRolesObjects.map(roleObject => existingRolesArray.push(roleObject.name));
+
+  newRoles.map((role) => {
+    if (!existingRolesArray?.includes(role)) throw new Error(`Error: Role ${role} is not valid`);
+  });
   
   next();
 };

@@ -24,12 +24,11 @@ const signUp = (req, res) => {
         }
       }).then((roles) => {
         user.setRoles(roles).then(() => {
-          res.send({ message: 'User registered successfully.' });
+          res.status(200).send({ message: 'User registered successfully.' });
         });
       });
     } else {
-      console.log('No roles specified, denying signup.');
-      res.status(422).send();
+      res.status(422).send({ message: 'Valid roles must be specified for signup.' });
     }
   }).catch((err) => {
     res.status(500).send({ message: err.message });
@@ -83,4 +82,9 @@ const signIn = (req, res) => {
   });
 };
 
-module.exports = { signUp, signIn }
+const createRole = (req, res) => {
+  Role.create(req.body.role);
+  res.status(200).send({ message: `Role ${req.body.role} created successfully.` });
+}
+
+module.exports = { signUp, signIn, createRole }

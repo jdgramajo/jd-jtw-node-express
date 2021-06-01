@@ -8,6 +8,12 @@ module.exports = (sequelize, Sequelize) => {
     },
     password: {
       type: Sequelize.STRING
+    },
+    isActive: {
+      type: Sequelize.BOOLEAN
+    },
+    deleted: {
+      type: Sequelize.BOOLEAN
     }
   });
 

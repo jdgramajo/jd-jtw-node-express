@@ -29,24 +29,9 @@ const db = require('./models');
 db.sequelize
   .authenticate()
   .then(() => {
-    console.log('Connection has been established successfully.');
-    // Uncomment the next line to create initial data.
-    sync();
+    db.sequelize.sync({ force: true }).then(() => { db.Role.create({ id: 0, name: 'JWTING_ADMIN' }) });
+    console.log('Connection to database successfull.');
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
   });
-
-const sync = () => {
-  // force: true will drop the table if it already exists.
-  db.sequelize.sync({force: true}).then(() => {
-
-    db.ROLES.map((role) => {
-      db.Role.create({
-        id: db.ROLES.indexOf(role),
-        name: role
-      });
-    });
-
-  });
-}
