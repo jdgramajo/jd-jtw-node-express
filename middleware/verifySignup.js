@@ -3,6 +3,11 @@ const Role = db.Role;
 const User = db.User;
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
+  // Safety first
+  if (!req.body.username || !req.body.email) {
+    res.status(422).send({ message: "Error: no username or email" });
+    return;
+  }
   // Username
   User.findOne({
     where: {

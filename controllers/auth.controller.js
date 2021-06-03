@@ -9,6 +9,11 @@ const Role = db.Role;
 const Op = db.Sequelize.Op;
 
 const signUp = (req, res) => {
+  // Safety first
+  if (!req.body.password) {
+    res.status(422).send({ message: "Error: must supply a password." });
+    return;
+  }
   // Save User to Database
   User.create({
     username: req.body.username,
