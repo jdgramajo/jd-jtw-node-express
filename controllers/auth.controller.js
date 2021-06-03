@@ -11,7 +11,7 @@ const Op = db.Sequelize.Op;
 const signUp = (req, res) => {
   // Safety first
   if (!req.body.password) {
-    res.status(422).send({ message: "Error: must supply a password." });
+    res.status(422).send({ message: 'Error: must supply a password.' });
     return;
   }
   // Save User to Database
@@ -43,6 +43,11 @@ const signUp = (req, res) => {
 };
 
 const signIn = (req, res) => {
+  // Safety first
+  if (!req.body.username || !req.body.password) {
+    res.status(422).send({ message: 'Error: must supply both user and password.' });
+    return;
+  }
   User.findOne({
     where: {
       username: req.body.username

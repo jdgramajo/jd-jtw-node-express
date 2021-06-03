@@ -9,14 +9,14 @@ const verifyToken = (req, res, next) => {
 
   if (!token) {
     return res.status(401).send({
-      message: 'Unauthorized'
+      message: 'Error: Unauthorized'
     });
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       return res.status(403).send({
-        message: 'Unauthorized'
+        message: 'Error: Unauthorized'
       });
     }
     req.userId = decoded.id;
@@ -66,7 +66,7 @@ const userIsAdmin = (req, res, next) => {
 const roleDoesNotExist = async (req, res, next) => {
   const newRole = req.body.role;
   if (!newRole) {
-    res.status(422).send()
+    res.status(422).send({ message: 'Error: must supply role.' })
     return;
   };
 
@@ -75,7 +75,7 @@ const roleDoesNotExist = async (req, res, next) => {
   existingRolesObjects.map(roleObject => existingRolesArray.push(roleObject.name));
 
   if (existingRolesArray.includes(newRole)) {
-    res.status(422).send({ message: `Role ${role} already exists`});
+    res.status(422).send({ message: `Error: Role ${role} already exists`});
     return;
   }
 

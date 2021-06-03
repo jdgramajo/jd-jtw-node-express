@@ -1,11 +1,11 @@
-const db = require("../models");
+const db = require('../models');
 const Role = db.Role;
 const User = db.User;
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Safety first
   if (!req.body.username || !req.body.email) {
-    res.status(422).send({ message: "Error: no username or email" });
+    res.status(422).send({ message: 'Error: no username or email' });
     return;
   }
   // Username
@@ -16,7 +16,7 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
   }).then(user => {
     if (user) {
       res.status(422).send({
-        message: "Error: Username taken"
+        message: 'Error: Username taken'
       });
       return;
     }
@@ -29,7 +29,7 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
     }).then(user => {
       if (user) {
         res.status(422).send({
-          message: "Error: Email taken"
+          message: 'Error: Email taken'
         });
         return;
       }

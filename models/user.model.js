@@ -5,6 +5,10 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
+    uuid: {
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
+    },
     username: {
       type: Sequelize.STRING
     },
