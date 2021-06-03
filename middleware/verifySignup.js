@@ -34,22 +34,26 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
   });
 };
 
+const containsAll = (parent, child) => child.every(e => parent.includes(e));
+
 const checkRoles = async (req, res, next) => {
   const newRoles = req.body.roles;
   if (!newRoles) {
     res.status(422).send({ message: 'Must specify a role or roles for the user.' });
     return;
   }
+  const dedupedRoles = [...new Set(newRoles)];
 
   const existingRolesObjects = await Role.findAll({ attributes: [ 'name' ] });
   const existingRolesArray = [];
   existingRolesObjects.map(roleObject => existingRolesArray.push(roleObject.name));
 
-  newRoles.map((role) => {
-    if (!existingRolesArray?.includes(role)) throw new Error(`Error: Role ${role} is not valid`);
-  });
-  
-  next();
+  if (!containsAll(existingRolesArray, dedupedRoles)) {
+    res.status(422).send({ message: `Not all specified roles in ${JSON.stringify(dedupedRoles)} are valid.` });
+    return;
+  } else {
+    next();
+  }
 };
 
 module.exports = {

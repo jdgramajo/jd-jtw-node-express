@@ -13,6 +13,8 @@ const signUp = (req, res) => {
   User.create({
     username: req.body.username,
     email: req.body.email,
+    isActive: true,
+    deleted: false,
     password: bcrypt.hashSync(req.body.password, 8)
   }).then((user) => {
     if (req.body.roles && req.body.roles.length) {
@@ -83,7 +85,7 @@ const signIn = (req, res) => {
 };
 
 const createRole = (req, res) => {
-  Role.create(req.body.role);
+  Role.create({ name: req.body.role });
   res.status(200).send({ message: `Role ${req.body.role} created successfully.` });
 }
 

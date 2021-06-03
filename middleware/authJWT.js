@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config.js');
 const db = require('../models');
 const User = db.User;
+const Role = db.Role;
 
 const verifyToken = (req, res, next) => {
   const token = req.headers['x-access-token'];
@@ -23,7 +24,7 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-const getRoles = (req, res, next) => {
+const getUserRoles = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(userRoles => {
       const roles = [];
@@ -36,7 +37,7 @@ const getRoles = (req, res, next) => {
   });
 }
 
-const hasRole = (req, res, next) => {
+const userHasRole = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(userRoles => {
       const roles = [];
@@ -49,7 +50,7 @@ const hasRole = (req, res, next) => {
   });
 }
 
-const isAdmin = (req, res, next) => {
+const userIsAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(userRoles => {
       const roles = [];
@@ -62,15 +63,18 @@ const isAdmin = (req, res, next) => {
   });
 }
 
-const checkIfRoleExists = (req, res, next) => {
+const roleDoesNotExist = async (req, res, next) => {
   const newRole = req.body.role;
   if (!newRole) {
     res.status(422).send()
     return;
   };
 
-  const existingRoles = Role.findAll({ attributes: [ 'name' ] });
-  if (existingRoles.includes(newRole)) {
+  const existingRolesObjects = await Role.findAll({ attributes: [ 'name' ] });
+  const existingRolesArray = [];
+  existingRolesObjects.map(roleObject => existingRolesArray.push(roleObject.name));
+
+  if (existingRolesArray.includes(newRole)) {
     res.status(422).send({ message: `Role ${role} already exists`});
     return;
   }
@@ -80,10 +84,10 @@ const checkIfRoleExists = (req, res, next) => {
 
 const authJWT = {
   verifyToken,
-  getRoles,
-  hasRole,
-  isAdmin,
-  checkIfRoleExists
+  getUserRoles,
+  userHasRole,
+  userIsAdmin,
+  roleDoesNotExist
 };
 
 module.exports = authJWT;

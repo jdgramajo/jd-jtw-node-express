@@ -23,10 +23,12 @@ module.exports = (app) => {
 
   app.post('/auth/signin', controller.signIn);
 
-  app.post('/auth/roles',
+  app.post(
+    '/auth/roles',
     [
-      authJWT.isAdmin,
-      authJWT.checkIfRoleExists
+      authJWT.verifyToken,
+      authJWT.userIsAdmin,
+      authJWT.roleDoesNotExist
     ],
     controller.createRole
   );
