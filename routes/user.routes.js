@@ -11,7 +11,7 @@ module.exports = (app) => {
   });
 
   app.get(
-    '/roles',
+    '/myRoles',
     [
       authJWT.verifyToken,
       authJWT.getUserRoles,
@@ -20,9 +20,10 @@ module.exports = (app) => {
   );
 
   app.post(
-    '/hasRoles',
+    '/hasRole',
     [
       authJWT.verifyToken,
+      authJWT.userIsAdmin, // TODO: include role CLIENT_APP
       authJWT.userHasRole,
     ],
     controller.confirmRole

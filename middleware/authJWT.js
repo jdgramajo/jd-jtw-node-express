@@ -38,7 +38,15 @@ const getUserRoles = (req, res, next) => {
 }
 
 const userHasRole = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
+  if (!req.body.username) {
+    res.status(422).send({ message: 'Error: must specify username.' });
+    return;
+  }
+  User.findAll({ where: { username: req.body.username } }).then(user => {
+    if (!user) {
+      res.status(404).send({ message: 'Error: User not found.' });
+      return;
+    }
     user.getRoles().then(userRoles => {
       const roles = [];
       userRoles.map(role => roles.push(role.name));
