@@ -94,9 +94,11 @@ const signIn = (req, res) => {
   });
 };
 
-const createRole = (req, res) => {
-  Role.create({ name: req.body.role });
-  res.status(200).send({ message: `Role ${req.body.role} created successfully.` });
+const createRoles = async (req, res) => {
+  const roles = req.body.roles;
+  const rolesBulk = roles.map(role => { return { name: role } });
+  await Role.bulkCreate(rolesBulk);
+  res.status(200).send({ message: `${roles} roles created successfully.` });
 }
 
-module.exports = { signUp, signIn, createRole }
+module.exports = { signUp, signIn, createRoles }

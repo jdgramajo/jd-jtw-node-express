@@ -28,9 +28,9 @@ module.exports = (app) => {
     [
       authJWT.verifyToken,
       authJWT.userIsAdmin,
-      authJWT.roleDoesNotExist
+      authJWT.checkAndFilterExistingRoles,
     ],
-    controller.createRole
+    controller.createRoles
   );
 
 };

@@ -14,7 +14,7 @@ module.exports = (app) => {
     '/roles',
     [
       authJWT.verifyToken,
-      authJWT.getUserRoles
+      authJWT.getUserRoles,
     ],
     controller.returnRoles
   );
@@ -23,7 +23,7 @@ module.exports = (app) => {
     '/hasRoles',
     [
       authJWT.verifyToken,
-      authJWT.userHasRole
+      authJWT.userHasRole,
     ],
     controller.confirmRole
   );

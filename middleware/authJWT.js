@@ -63,10 +63,10 @@ const userIsAdmin = (req, res, next) => {
   });
 }
 
-const roleDoesNotExist = async (req, res, next) => {
-  const newRole = req.body.role;
-  if (!newRole) {
-    res.status(422).send({ message: 'Error: must supply role.' })
+const checkAndFilterExistingRoles = async (req, res, next) => {
+  const newRoles = req.body.roles;
+  if (!newRoles?.length) {
+    res.status(422).send({ message: 'Error: must supply an array of roles.' })
     return;
   };
 
@@ -74,20 +74,24 @@ const roleDoesNotExist = async (req, res, next) => {
   const existingRolesArray = [];
   existingRolesObjects.map(roleObject => existingRolesArray.push(roleObject.name));
 
-  if (existingRolesArray.includes(newRole)) {
-    res.status(422).send({ message: `Error: Role ${role} already exists`});
+  const nonRepeatedRoles = newRoles.filter(role => !existingRolesArray.includes(role));
+
+  if (!nonRepeatedRoles?.length) {
+    res.status(422).send({ message: 'Error: all supplied roles already exist.' })
     return;
+  } else {
+    req.body.roles = nonRepeatedRoles;
   }
 
   next();
-};
+}
 
 const authJWT = {
   verifyToken,
   getUserRoles,
   userHasRole,
   userIsAdmin,
-  roleDoesNotExist
+  checkAndFilterExistingRoles,
 };
 
 module.exports = authJWT;
