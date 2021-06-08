@@ -42,28 +42,39 @@ const userHasRole = (req, res, next) => {
     res.status(422).send({ message: 'Error: must specify username.' });
     return;
   }
-  User.findAll({ where: { username: req.body.username } }).then(user => {
-    if (!user) {
+  User.findAll({
+    where: {
+      username: req.body.username,
+      deleted: false
+    },
+    include: Role
+  }).then(user => {
+    if (!user?.length) {
       res.status(404).send({ message: 'Error: User not found.' });
       return;
-    }
-    user.getRoles().then(userRoles => {
-      const roles = [];
-      userRoles.map(role => roles.push(role.name));
-      req.hasRole = roles.includes(req.body.role);
-      next();
-    });
+    };
+    if (!user[0]?.roles?.length) {
+      res.status(404).send({ message: 'Error: User has no roles.' });
+      return;
+    };
+    const roleNamesArray = [];
+    user[0]?.roles?.map(role => roleNamesArray.push(role.name));
+    req.hasRole = roleNamesArray.includes(req.body.role);
+    next();
   }).catch(err => {
-    res.status(404).send();
+    res.status(500).send({ message: err.message });
   });
 }
 
 const userIsAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
+    const roles = [];
     user.getRoles().then(userRoles => {
-      const roles = [];
       userRoles.map(role => roles.push(role.name));
-      if (!roles.includes('JWTING_ADMIN')) res.status(403).send();
+      if (!roles.includes('JWTING_ADMIN')) {
+        res.status(403).send('Error: Unauthorized');
+        return;
+      }
       next();
     });
   }).catch(err => {

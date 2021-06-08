@@ -19,7 +19,7 @@ module.exports = (app) => {
     controller.returnRoles
   );
 
-  app.post(
+  app.get(
     '/hasRole',
     [
       authJWT.verifyToken,
