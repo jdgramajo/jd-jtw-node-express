@@ -1,22 +1,22 @@
 // Server related code
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
 var corsOptions = {
-  origin: '*'
-}
+  origin: "*",
+};
 app.use(cors(corsOptions));
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to JWTing!' });
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to JWTing!" });
 });
 
-require('./routes/auth.routes')(app);
-require('./routes/user.routes')(app);
+require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
@@ -24,7 +24,7 @@ app.listen(PORT, () => {
 });
 
 // Persistence Related code
-const db = require('./models');
+const db = require("./models");
 
 db.sequelize
   .authenticate()
@@ -32,8 +32,8 @@ db.sequelize
     // db.sequelize.sync({ force: true }).then(() => {
     //   db.Role.create({ id: 0, name: 'JWTING_ADMIN' });
     // });
-    console.log('Connection to database successfull.');
+    console.log("Connection to database successfull.");
   })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
   });

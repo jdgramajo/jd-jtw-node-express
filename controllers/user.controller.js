@@ -8,5 +8,5 @@ const confirmRole = (req, res) => {
 
 module.exports = {
   returnRoles,
-  confirmRole
-}
+  confirmRole,
+};

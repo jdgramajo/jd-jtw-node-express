@@ -1,5 +1,4 @@
-JWTING
-======
+# JWTING
 
 This is the authentication and authorization manager. Here is where we create clients and users. Clients are other apps, users are final users.
 
@@ -13,7 +12,7 @@ The following enpoints are (or will be) supplied:
 /hasRole
 ```
 
-No one should be able to create a user with `admin` rights for this app. 
+No one should be able to create a user with `admin` rights for this app.
 
 Only the admin will be able to create clients, and it will be able to perform all actions a client can perform.
 

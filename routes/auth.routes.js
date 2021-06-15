@@ -1,18 +1,17 @@
-const { verifySignup, authJWT } = require('../middleware');
-const controller = require('../controllers/auth.controller');
+const { verifySignup, authJWT } = require("../middleware");
+const controller = require("../controllers/auth.controller");
 
 module.exports = (app) => {
-
   app.use((req, res, next) => {
     res.header(
-      'Access-Control-Allow-Headers',
-      'x-access-token, Origin, Content-Type, Accept'
+      "Access-Control-Allow-Headers",
+      "x-access-token, Origin, Content-Type, Accept"
     );
     next();
   });
 
   app.post(
-    '/auth/signup',
+    "/auth/signup",
     [
       // authJWT.isAdmin,  TODO: enable and disallow creating the admin user
       verifySignup.checkDuplicateUsernameOrEmail,
@@ -21,10 +20,10 @@ module.exports = (app) => {
     controller.signUp
   );
 
-  app.post('/auth/signin', controller.signIn);
+  app.post("/auth/signin", controller.signIn);
 
   app.post(
-    '/auth/roles',
+    "/auth/roles",
     [
       authJWT.verifyToken,
       authJWT.userIsAdmin,
@@ -32,5 +31,4 @@ module.exports = (app) => {
     ],
     controller.createRoles
   );
-
 };
