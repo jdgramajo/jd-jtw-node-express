@@ -17,6 +17,7 @@ module.exports = (sequelize, Sequelize) => {
       });
     }
   }
+
   User.init(
     {
       id: {
@@ -54,10 +55,12 @@ module.exports = (sequelize, Sequelize) => {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now"),
       },
     },
     {
@@ -66,5 +69,6 @@ module.exports = (sequelize, Sequelize) => {
       initialAutoIncrement: 0,
     }
   );
+
   return User;
 };

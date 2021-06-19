@@ -17,6 +17,7 @@ module.exports = (sequelize, Sequelize) => {
       });
     }
   }
+
   Role.init(
     {
       id: {
@@ -31,12 +32,12 @@ module.exports = (sequelize, Sequelize) => {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.fn("now"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.fn("now"),
       },
     },
     {
@@ -45,5 +46,6 @@ module.exports = (sequelize, Sequelize) => {
       initialAutoIncrement: 0,
     }
   );
+
   return Role;
 };

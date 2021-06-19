@@ -29,9 +29,6 @@ const db = require("./models");
 db.sequelize
   .authenticate()
   .then(() => {
-    // db.sequelize.sync({ force: true }).then(() => {
-    //   db.Role.create({ id: 0, name: 'JWTING_ADMIN' });
-    // });
     console.log("Connection to database successfull.");
   })
   .catch((err) => {
