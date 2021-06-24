@@ -10,7 +10,8 @@ module.exports = (app) => {
   app.post(
     "/auth/signup",
     [
-      // authJWT.isAdmin,  TODO: enable and disallow creating the admin user
+      authJWT.verifyToken,
+      authJWT.userIsAdmin, // admin users can only be created by existing admin, migrate the first
       verifySignup.checkDuplicateUsernameOrEmail,
       verifySignup.checkRoles,
     ],
