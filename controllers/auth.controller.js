@@ -61,10 +61,7 @@ const signIn = (req, res) => {
   })
     .then((user) => {
       if (!user) {
-        return res.status(403).send({
-          accessToken: null,
-          message: "Bad credentials.",
-        });
+        return res.status(403).send({ message: "Bad credentials." });
       }
 
       const passwordIsValid = bcrypt.compareSync(
@@ -73,29 +70,20 @@ const signIn = (req, res) => {
       );
 
       if (!passwordIsValid) {
-        return res.status(401).send({
-          accessToken: null,
-          message: "Bad credentials.",
-        });
+        return res.status(401).send({ message: "Bad credentials." });
       }
 
       const token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: 60, // 1 minute
       });
 
-      user.getRoles().then((userRoles) => {
-        const roles = [];
-        userRoles.map((role) => {
-          roles.push(role.name);
-        });
-        res.status(200).send({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          roles,
-          accessToken: token,
-        });
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: false,
+        maxAge: 60000,
       });
+
+      res.status(200).send();
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });

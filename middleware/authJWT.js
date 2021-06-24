@@ -5,7 +5,7 @@ const User = db.User;
 const Role = db.Role;
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers["x-access-token"];
+  const token = req.cookies?.jwt;
 
   if (!token) {
     return res.status(401).send({
