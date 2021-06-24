@@ -1,5 +1,5 @@
 const { authJWT } = require("../middleware");
-const controller = require("../controllers/user.controller");
+const controller = require("../controllers/user");
 
 module.exports = (app) => {
   app.use((req, res, next) => {
