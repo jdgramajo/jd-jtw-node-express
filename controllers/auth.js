@@ -61,7 +61,7 @@ const signIn = (req, res) => {
   })
     .then((user) => {
       if (!user) {
-        return res.status(403).send({ message: "Bad credentials." });
+        return res.status(401).send({ message: "Bad credentials." });
       }
 
       const passwordIsValid = bcrypt.compareSync(
@@ -81,6 +81,7 @@ const signIn = (req, res) => {
         httpOnly: true,
         secure: false,
         maxAge: 60000,
+        sameSite: true,
       });
 
       res.status(200).send();

@@ -3,7 +3,11 @@ const controller = require("../controllers/auth");
 
 module.exports = (app) => {
   app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
+    res.header({
+      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept",
+      "Access-Control-Allow-Origin": req.header("Origin"),
+      "Access-Control-Allow-Credentials": true,
+    });
     next();
   });
 
@@ -17,6 +21,11 @@ module.exports = (app) => {
     ],
     controller.signUp
   );
+
+  app.options("/auths/signin", (req, res) => {
+    res.header("Access-Control-Allow-Methods", "POST");
+    res.status(200).send();
+  });
 
   app.post("/auth/signin", controller.signIn);
 
