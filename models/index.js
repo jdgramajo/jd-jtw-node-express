@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-const { schema, user, password, connection } = require("../config/db.config");
+const { schema, user, password, connection } = require("../config/db");
 const sequelize = new Sequelize(schema, user, password, connection);
 
 // Ref: https://codewithhugo.com/using-es6-classes-for-sequelize-4-models/
