@@ -81,7 +81,7 @@ const signIn = (req, res) => {
         httpOnly: true,
         secure: false,
         maxAge: 60000,
-        sameSite: true,
+        // sameSite: true, TODO: determine which suits needs best
       });
 
       res.status(200).send();
