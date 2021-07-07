@@ -79,9 +79,9 @@ const signIn = (req, res) => {
 
       res.cookie("jwt", token, {
         httpOnly: true,
-        secure: false,
+        secure: false, // true requires https
         maxAge: 60000,
-        // sameSite: true, TODO: determine which suits needs best
+        sameSite: "none", // true requires secure field to be true
       });
 
       res.status(200).send();
