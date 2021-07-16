@@ -81,7 +81,7 @@ const signIn = (req, res) => {
         httpOnly: true,
         secure: false, // true requires https
         maxAge: 60000,
-        sameSite: "none", // true requires secure field to be true
+        sameSite: "none", // "none" will require secure field to be true
       });
 
       res.status(200).send();
