@@ -38,4 +38,8 @@ module.exports = (app) => {
     ],
     controller.createRoles
   );
+
+  app.get("/auth/signout", (req, res) => {
+    res.clearCookie("jwt").send(200);
+  });
 };
