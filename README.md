@@ -7,6 +7,7 @@ The following enpoints are (or will be) supplied:
 ```
 /auth/signup
 /auth/signin
+/auth/changepwd
 /auth/roles
 /myRoles
 /hasRole
