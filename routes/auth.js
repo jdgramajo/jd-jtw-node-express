@@ -29,6 +29,13 @@ module.exports = (app) => {
 
   app.post("/auth/signin", controller.signIn);
 
+  app.options("/auths/changepwd", (req, res) => {
+    res.header("Access-Control-Allow-Methods", "POST");
+    res.status(200).send();
+  });
+
+  app.post("/auth/changepwd", authJWT.verifyToken, controller.changePWD);
+
   app.post(
     "/auth/roles",
     [

@@ -39,10 +39,12 @@ const signUp = (req, res) => {
         res
           .status(422)
           .send({ message: "Valid roles must be specified for signup." });
+        return;
       }
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
+      return;
     });
 };
 
@@ -61,7 +63,8 @@ const signIn = (req, res) => {
   })
     .then((user) => {
       if (!user) {
-        return res.status(401).send({ message: "Bad credentials." });
+        res.status(401).send({ message: "Bad credentials." });
+        return;
       }
 
       const passwordIsValid = bcrypt.compareSync(
@@ -70,7 +73,8 @@ const signIn = (req, res) => {
       );
 
       if (!passwordIsValid) {
-        return res.status(401).send({ message: "Bad credentials." });
+        res.status(401).send({ message: "Bad credentials." });
+        return;
       }
 
       const token = jwt.sign({ id: user.id }, config.secret, {
@@ -85,10 +89,51 @@ const signIn = (req, res) => {
       });
 
       res.status(200).send();
+      return;
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
+      return;
     });
+};
+
+const changePWD = async (req, res) => {
+  // Safety first
+  if (!req.body.newPassword || !req.body.confirmPassword) {
+    res.status(422).send({ message: "Error: missing data." });
+    return;
+  }
+
+  // Check passwords match
+  if (req.body.newPassword !== req.body.confirmPassword) {
+    res.status(422).send({ message: "Error: passwords don't match." });
+    return;
+  }
+
+  try {
+    const user = await User.findByPk(req.userId);
+    user.password = bcrypt.hashSync(req.body.newPassword, 8);
+    await user.save();
+
+    const token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 60, // 1 minute
+    });
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: false, // true requires https
+      maxAge: 60000, // 1 minute
+      sameSite: "none", // true requires secure field to be true
+    });
+
+    res
+      .status(200)
+      .send({ message: `Password updated for user ${user.username}.` });
+    return;
+  } catch (err) {
+    res.status(500).send(`${err}`);
+    return;
+  }
 };
 
 const createRoles = async (req, res) => {
@@ -98,6 +143,7 @@ const createRoles = async (req, res) => {
   });
   await Role.bulkCreate(rolesBulk);
   res.status(200).send({ message: `${roles} roles created successfully.` });
+  return;
 };
 
-module.exports = { signUp, signIn, createRoles };
+module.exports = { signUp, signIn, changePWD, createRoles };
