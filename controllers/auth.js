@@ -83,9 +83,9 @@ const signIn = (req, res) => {
 
       res.cookie("jwt", token, {
         httpOnly: true,
-        secure: false, // true requires https
-        maxAge: 60000,
-        sameSite: "none", // "none" will require secure field to be true
+        secure: process.env.SECURE_COOKIE === "true", // true requires https
+        maxAge: 60000, // 1 minute
+        sameSite: process.env.SAME_SITE_COOKIE ?? "none", // none value requires secure to be true
       });
 
       res.status(200).send();
@@ -121,9 +121,9 @@ const changePWD = async (req, res) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      secure: false, // true requires https
+      secure: process.env.SECURE_COOKIE === "true", // true requires https
       maxAge: 60000, // 1 minute
-      sameSite: "none", // true requires secure field to be true
+      sameSite: process.env.SAME_SITE_COOKIE ?? "none", // none value requires secure to be true
     });
 
     res

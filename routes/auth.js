@@ -22,14 +22,14 @@ module.exports = (app) => {
     controller.signUp
   );
 
-  app.options("/auths/signin", (req, res) => {
+  app.options("/auth/signin", (req, res) => {
     res.header("Access-Control-Allow-Methods", "POST");
     res.status(200).send();
   });
 
   app.post("/auth/signin", controller.signIn);
 
-  app.options("/auths/changepwd", (req, res) => {
+  app.options("/auth/changepwd", (req, res) => {
     res.header("Access-Control-Allow-Methods", "POST");
     res.status(200).send();
   });
