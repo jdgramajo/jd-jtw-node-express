@@ -47,6 +47,13 @@ module.exports = (app) => {
   );
 
   app.post("/auth/signout", (req, res) => {
-    res.clearCookie("jwt").status(200).send();
+    res
+      .clearCookie("jwt", {
+        httpOnly: true,
+        secure: process.env.SECURE_COOKIE === "true", // true requires https
+        sameSite: process.env.SAME_SITE_COOKIE ?? "none", // none value requires secure to be true
+      })
+      .status(200)
+      .send();
   });
 };
